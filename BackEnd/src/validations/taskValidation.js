@@ -26,12 +26,12 @@ const createNew = async (req, res, next) => {
   try {
     // abortEarly: false allows all validation errors to be returned at once
     await correctCondition.validateAsync(req.body, { abortEarly: false })
-    res
-      .status(StatusCodes.CREATED)
-      .json({ message: 'Task created successfully' })
+
+    // If validation passes, proceed to the next controller
+    next()
   } catch (error) {
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
-      errors: new Error(error).message
+      errors: error.message
     })
   }
 }
