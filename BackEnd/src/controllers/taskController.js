@@ -1,13 +1,13 @@
 import { StatusCodes } from 'http-status-codes'
+import { taskService } from '~/services/taskService.js'
 
-const createNew = (req, res, next) => {
+const createNew = async (req, res, next) => {
   try {
     // Redirect data to the service layer
+    const createTask = await taskService.createNew(req.body)
 
-    // Resulte response for client
-    res
-      .status(StatusCodes.CREATED)
-      .json({ message: 'POST from Controller: API create new task' })
+    // Result response for client
+    res.status(StatusCodes.CREATED).json(createTask)
   } catch (error) {
     next(error) // Pass the error to the error handling middleware
   }
