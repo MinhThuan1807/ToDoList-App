@@ -1,6 +1,6 @@
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { taskRoutes } from './taskRoutes.js'
+import { taskRoute } from './taskRoute.js'
 
 const Router = express.Router()
 
@@ -13,6 +13,6 @@ Router.get('/status', (req, res) => {
 })
 
 // Register task routes
-Router.use('/tasks', taskRoutes)
+Router.use('/tasks', taskRoute)
 
 export const APIs_V1 = Router
