@@ -1,5 +1,6 @@
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { taskValidation } from '~/validations/taskValidation'
 
 const Router = express.Router()
 
@@ -10,11 +11,6 @@ Router.route('/')
       message: 'GET: API get all tasks'
     })
   })
-  .post((req, res) => {
-    res.status(StatusCodes.CREATED).json({
-      status: 'OK',
-      message: 'POST: API create a new task'
-    })
-  })
+  .post(taskValidation.createNew)
 
-export const taskRoutes = Router
+export const taskRoute = Router
