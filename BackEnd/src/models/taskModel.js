@@ -14,7 +14,7 @@ const TASK_COLLECTION_SCHEMA = Joi.object({
   slug: Joi.string().required().min(3).trim().strict(),
   description: Joi.string().optional().allow('').max(500).trim().strict(),
   status: Joi.boolean().default(false),
-  dueDate: Joi.date().optional(),
+  dueDate: Joi.date().optional().default(null),
   createdAt: Joi.date().timestamp('javascript').default(Date.now),
   updatedAt: Joi.date().timestamp('javascript').default(null),
   _destroy: Joi.boolean().default(false)
@@ -87,11 +87,24 @@ const update = async (taskId, updateData) => {
   }
 }
 
+const deleteOneById = async (taskId) => {
+  try {
+    const result = await GET_DB()
+      .collection(TASK_NAME)
+      .deleteOne({ _id: new ObjectId(taskId) })
+
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const taskModel = {
   TASK_NAME,
   TASK_COLLECTION_SCHEMA,
   createNew,
   findOneById,
   getAll,
-  update
+  update,
+  deleteOneById
 }

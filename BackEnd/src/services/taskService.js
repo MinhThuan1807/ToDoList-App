@@ -64,9 +64,30 @@ const update = async (taskId, reqBody) => {
   }
 }
 
+const deleteTask = async (taskId) => {
+  try {
+    const task = await taskModel.findOneById(taskId)
+
+    if (!task) {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        `Task with ID ${taskId} not found`
+      )
+    }
+
+    // Call to model layer to delete the task
+    await taskModel.deleteOneById(taskId)
+
+    return { deleteResult: 'Task deleted successfully' }
+  } catch (error) {
+    throw error
+  }
+}
+
 export const taskService = {
   createNew,
   getAll,
   getDetail,
-  update
+  update,
+  deleteTask
 }

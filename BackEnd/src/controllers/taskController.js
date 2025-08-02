@@ -44,9 +44,22 @@ const update = async (req, res, next) => {
     next(error)
   }
 }
+
+const deleteTask = async (req, res, next) => {
+  try {
+    const taskId = req.params.id
+    await taskService.deleteTask(taskId)
+
+    res.status(StatusCodes.OK).json({ message: 'Task deleted successfully' })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const taskController = {
   createNew,
   getAll,
   getDetail,
-  update
+  update,
+  deleteTask
 }

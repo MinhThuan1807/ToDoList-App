@@ -11,4 +11,6 @@ Router.route('/')
 Router.route('/:id')
   .get(taskController.getDetail)
   .put(taskValidation.update, taskController.update)
+  .delete(taskValidation.deleteItem, taskController.deleteTask)
+
 export const taskRoute = Router
