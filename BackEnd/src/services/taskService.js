@@ -49,8 +49,24 @@ const getDetail = async (taskId) => {
   }
 }
 
+const update = async (taskId, reqBody) => {
+  try {
+    const updateData = {
+      ...reqBody,
+      updatedAt: Date.now()
+    }
+    const updatedTask = await taskModel.update(taskId, updateData)
+
+    // Return the updated task
+    return updatedTask
+  } catch (error) {
+    throw error
+  }
+}
+
 export const taskService = {
   createNew,
   getAll,
-  getDetail
+  getDetail,
+  update
 }

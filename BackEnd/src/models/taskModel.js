@@ -20,6 +20,8 @@ const TASK_COLLECTION_SCHEMA = Joi.object({
   _destroy: Joi.boolean().default(false)
 })
 
+const INVALID_UPDATE_FIELDS = ['_id', 'createdAt']
+
 const validateBeforeCreate = async (data) => {
   return await TASK_COLLECTION_SCHEMA.validateAsync(data, {
     abortEarly: false
@@ -62,10 +64,34 @@ const getAll = async () => {
   }
 }
 
+const update = async (taskId, updateData) => {
+  try {
+    // Filter out invalid fields
+    Object.keys(updateData).forEach((fieldName) => {
+      if (INVALID_UPDATE_FIELDS.includes(fieldName)) {
+        delete updateData[fieldName]
+      }
+    })
+
+    const result = await GET_DB()
+      .collection(TASK_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(taskId) },
+        { $set: updateData },
+        { returnDocument: 'after' } // Return the updated document
+      )
+
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const taskModel = {
   TASK_NAME,
   TASK_COLLECTION_SCHEMA,
   createNew,
   findOneById,
-  getAll
+  getAll,
+  update
 }
