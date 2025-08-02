@@ -12,6 +12,16 @@ const createNew = async (req, res, next) => {
     next(error) // Pass the error to the error handling middleware
   }
 }
+const getAll = async (req, res, next) => {
+  try {
+    const tasks = await taskService.getAll()
+
+    res.status(StatusCodes.OK).json(tasks)
+  } catch (error) {
+    next(error)
+  }
+}
 export const taskController = {
-  createNew
+  createNew,
+  getAll
 }
