@@ -8,4 +8,5 @@ Router.route('/')
   .get(taskController.getAll)
   .post(taskValidation.createNew, taskController.createNew)
 
+Router.route('/:id').get(taskController.getDetail).put()
 export const taskRoute = Router
