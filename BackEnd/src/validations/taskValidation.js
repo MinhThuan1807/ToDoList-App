@@ -1,6 +1,7 @@
 import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
+import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validator'
 
 const createNew = async (req, res, next) => {
   const correctCondition = Joi.object({
@@ -22,7 +23,7 @@ const createNew = async (req, res, next) => {
         'string.trim': 'Description cannot have leading or trailing spaces'
       }),
     status: Joi.boolean().default(false),
-    dueDate: Joi.date().optional()
+    dueDate: Joi.date().optional().default(null)
   })
   try {
     // abortEarly: false allows all validation errors to be returned at once
@@ -59,6 +60,7 @@ const update = async (req, res, next) => {
   })
   try {
     // abortEarly: false allows all validation errors to be returned at once
+    // allowUnknown: true allows additional fields not specified in the schema
     await correctCondition.validateAsync(req.body, {
       abortEarly: false,
       allowUnknown: true
@@ -71,7 +73,24 @@ const update = async (req, res, next) => {
   }
 }
 
+const deleteItem = async (req, res, next) => {
+  const correctCondition = Joi.object({
+    id: Joi.string()
+      .required()
+      .pattern(OBJECT_ID_RULE)
+      .message(OBJECT_ID_RULE_MESSAGE)
+  })
+  try {
+    await correctCondition.validateAsync(req.params)
+
+    next()
+  } catch (error) {
+    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, error.message))
+  }
+}
+
 export const taskValidation = {
   createNew,
-  update
+  update,
+  deleteItem
 }
