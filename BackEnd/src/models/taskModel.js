@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validator'
+// import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validator'
 import { GET_DB } from '~/config/mongodb'
 import { ObjectId } from 'mongodb'
 
@@ -52,9 +52,20 @@ const findOneById = async (id) => {
   }
 }
 
+const getAll = async () => {
+  try {
+    const tasks = await GET_DB().collection(TASK_NAME).find().toArray()
+
+    return tasks
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const taskModel = {
   TASK_NAME,
   TASK_COLLECTION_SCHEMA,
   createNew,
-  findOneById
+  findOneById,
+  getAll
 }

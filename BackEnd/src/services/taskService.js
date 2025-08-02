@@ -20,6 +20,17 @@ const createNew = async (reqBody) => {
     throw error
   }
 }
+
+const getAll = async () => {
+  try {
+    const tasks = await taskModel.getAll()
+
+    return tasks
+  } catch (error) {
+    throw error
+  }
+}
 export const taskService = {
-  createNew
+  createNew,
+  getAll
 }
