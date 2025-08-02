@@ -21,7 +21,32 @@ const getAll = async (req, res, next) => {
     next(error)
   }
 }
+
+const getDetail = async (req, res, next) => {
+  try {
+    const taskId = req.params.id
+
+    const task = await taskService.getDetail(taskId)
+
+    res.status(StatusCodes.OK).json(task)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const update = async (req, res, next) => {
+  try {
+    const taskId = req.params.id
+    const updatedTask = await taskService.update(taskId, req.body)
+
+    res.status(StatusCodes.OK).json(updatedTask)
+  } catch (error) {
+    next(error)
+  }
+}
 export const taskController = {
   createNew,
-  getAll
+  getAll,
+  getDetail,
+  update
 }

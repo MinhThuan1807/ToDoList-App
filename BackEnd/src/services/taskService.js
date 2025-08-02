@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-catch */
 import { slugify } from '~/utils/formatter'
 import { taskModel } from '~/models/taskModel'
+import ApiError from '~/utils/ApiError'
+import { StatusCodes } from 'http-status-codes'
 
 const createNew = async (reqBody) => {
   try {
@@ -30,7 +32,41 @@ const getAll = async () => {
     throw error
   }
 }
+
+const getDetail = async (taskId) => {
+  try {
+    const task = await taskModel.findOneById(taskId)
+    if (!task) {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        `Task with ID ${taskId} not found`
+      )
+    }
+    // Return the task details
+    return task
+  } catch (error) {
+    throw error
+  }
+}
+
+const update = async (taskId, reqBody) => {
+  try {
+    const updateData = {
+      ...reqBody,
+      updatedAt: Date.now()
+    }
+    const updatedTask = await taskModel.update(taskId, updateData)
+
+    // Return the updated task
+    return updatedTask
+  } catch (error) {
+    throw error
+  }
+}
+
 export const taskService = {
   createNew,
-  getAll
+  getAll,
+  getDetail,
+  update
 }
