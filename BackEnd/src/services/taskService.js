@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-catch */
 import { slugify } from '~/utils/formatter'
 import { taskModel } from '~/models/taskModel'
+import { userModel } from '~/models/userModel'
 import ApiError from '~/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
 
@@ -10,6 +11,14 @@ const createNew = async (reqBody) => {
       ...reqBody,
       slug: slugify(reqBody.title)
     }
+
+    if (!(await userModel.findOneById(newTask.userId))) {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        `User with ID ${newTask.userId} not found`
+      )
+    }
+
     // Call to model layer to create a new task
     const createdTask = await taskModel.createNew(newTask)
 

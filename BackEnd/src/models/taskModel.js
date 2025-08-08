@@ -1,15 +1,15 @@
 import Joi from 'joi'
-// import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validator'
+import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validator'
 import { GET_DB } from '~/config/mongodb'
 import { ObjectId } from 'mongodb'
 
 // Define the sachema for (name & Schema)
 const TASK_NAME = 'task'
 const TASK_COLLECTION_SCHEMA = Joi.object({
-  //   userId: Joi.string()
-  //     .required()
-  //     .pattern(OBJECT_ID_RULE)
-  //     .message(OBJECT_ID_RULE_MESSAGE),
+  userId: Joi.string()
+    .required()
+    .pattern(OBJECT_ID_RULE)
+    .message(OBJECT_ID_RULE_MESSAGE),
   title: Joi.string().required().min(3).max(100).trim().strict(),
   slug: Joi.string().required().min(3).trim().strict(),
   description: Joi.string().optional().allow('').max(500).trim().strict(),
@@ -35,6 +35,9 @@ const createNew = async (data) => {
     // console.log('Validated Data:', validData)
 
     // Get the database instance
+    // Convert userId to ObjectId before inserting
+    validData.userId = new ObjectId(validData.userId)
+
     const createTask = await GET_DB().collection(TASK_NAME).insertOne(validData)
 
     return createTask

@@ -34,6 +34,8 @@ const USER_COLLECTION_SCHEMA = Joi.object({
   _destroy: Joi.boolean().default(false)
 })
 
+const INVALID_UPDATE_FIELDS = ['_id', 'email', 'username', 'createdAt']
+
 const createNew = async (data) => {
   try {
     const validData = await USER_COLLECTION_SCHEMA.validateAsync(data, {
@@ -70,8 +72,30 @@ const findOneByEmail = async (email) => {
   }
 }
 
+const update = async (userId, data) => {
+  try {
+    Object.keys(data).forEach((key) => {
+      if (INVALID_UPDATE_FIELDS.includes(key)) {
+        delete data[key]
+      }
+    })
+
+    const result = await GET_DB()
+      .collection(USER_COLLECTION_NAME)
+      .updateOne(
+        { _id: new ObjectId(userId) },
+        { $set: data },
+        { returnDocument: 'after' }
+      )
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const userModel = {
   createNew,
   findOneById,
-  findOneByEmail
+  findOneByEmail,
+  update
 }

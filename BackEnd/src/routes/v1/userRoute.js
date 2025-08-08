@@ -9,4 +9,9 @@ Router.route('/register').post(
   userController.createNew
 )
 
+Router.route('/verify').put(
+  userValidation.verifyEmail,
+  userController.verifyEmail
+)
+
 export const userRouter = Router
