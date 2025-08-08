@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.22.10",
+    "@getbrevo/brevo": "^3.0.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "cross-env": "^10.0.0",
