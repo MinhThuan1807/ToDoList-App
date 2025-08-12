@@ -9,6 +9,8 @@ Router.route('/register').post(
   userController.createNew
 )
 
+Router.route('/login').post(userValidation.login, userController.login)
+
 Router.route('/verify').put(
   userValidation.verifyEmail,
   userController.verifyEmail
