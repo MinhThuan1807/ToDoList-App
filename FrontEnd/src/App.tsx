@@ -1,24 +1,44 @@
 import './App.css'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  Outlet
+} from 'react-router-dom'
 import Home from './pages/Home'
-import LoginForm from './pages/Auth/LoginForm'
-import RegisterForm from './pages/Auth/RegisterForm'
 import ToDoList from './components/ToDoList'
+import Action from './components/Action'
+import Profile from './components/Profile'
 import AccountVerification from './pages/Auth/AccountVerification'
+import Auth from './pages/Auth/Auth'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from './redux/user/userSlice'
 // import NotFound from './pages/404/NotFound'
 
+const ProtectedRoute = ({ user }: any) => {
+  if (!user) {
+    return <Navigate to="/login" replace={true} />
+  }
+  return <Outlet />
+}
+
 function App() {
+  const currentUser = useSelector(selectCurrentUser)
+
   return (
     // prettier-ignore
     <Router>
-          <div className='absolute right-0 w-[200px] flex justify-center items-center gap-5 '>
-            <Link to="/register" className='w-[75px] p-2 bg-brand-light rounded-2xl cursor-pointer hover:bg-brand-dark transition delay-100 duration-75 ease-in-out animate-ping scale-75'>Sign up</Link>
-            <Link to="/login" className='w-[75px] p-2 bg-brand-light rounded-2xl cursor-pointer hover:bg-brand-dark '>Sign in</Link>
-          </div>
+          {!currentUser ? <Action /> : <Profile />}
+
           <Routes>
-            <Route path='/' element={<Home><ToDoList/></Home>}></Route>
-            <Route path='/login' element={<Home><LoginForm/></Home>}></Route>
-            <Route path='/register' element={<Home><RegisterForm/></Home>}></Route>
+            <Route element={<ProtectedRoute user={currentUser} />}>
+              <Route path='/' element={<Home><ToDoList/></Home>}></Route>
+            </Route>
+
+            {/* Authentication */}
+            <Route path='/login' element={<Home><Auth /></Home>}></Route>
+            <Route path='/register' element={<Home><Auth /></Home>}></Route>
             <Route path='/account/verification' element={<AccountVerification/>}></Route>
           </Routes>
 
