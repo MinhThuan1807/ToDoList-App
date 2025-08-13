@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import LoginForm from './pages/Auth/LoginForm'
 import RegisterForm from './pages/Auth/RegisterForm'
 import ToDoList from './components/ToDoList'
+import AccountVerification from './pages/Auth/AccountVerification'
 // import NotFound from './pages/404/NotFound'
 
 function App() {
@@ -16,8 +17,9 @@ function App() {
           </div>
           <Routes>
             <Route path='/' element={<Home><ToDoList/></Home>}></Route>
-            <Route path='/login' element={<Home><LoginForm/></Home>}>0/</Route>
+            <Route path='/login' element={<Home><LoginForm/></Home>}></Route>
             <Route path='/register' element={<Home><RegisterForm/></Home>}></Route>
+            <Route path='/account/verification' element={<AccountVerification/>}></Route>
           </Routes>
 
           {/* 404 Not Found Page*/}
