@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { userReducer } from './user/userSlice'
 import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import storageSession from 'redux-persist/lib/storage/session'
 import { combineReducers } from '@reduxjs/toolkit'
 
 const rootPersistConfig = {
-  key: 'root',
-  storage: storage,
+  key: 'root', // The key for the root reducer
+  storage: storageSession, // Use session storage for persisting user data
   whitelist: ['user'] // user data can store in redux when press f5
 }
 
