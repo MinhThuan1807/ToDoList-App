@@ -11,9 +11,16 @@ type Task = {
 function ToDoList() {
   const [task, setTask] = useState('')
   const [tasks, setTasks] = useState<Task[]>([])
-  // const [check, setCheck] = useState(false)
+  const [filter, setFilter] = useState<'all' | 'pending' | 'compeleted'>('all')
+  const filteredTasks = tasks.filter(task => {
+    if(filter === 'all') return true
+    if(filter === 'pending') return !task.checked
+    if(filter === 'compeleted') return task.checked
+    return true
+  })
 
   const HandleAddTask = async () => {
+
     if (!task.trim()) return
     try {
       const res = await axios.post('http://localhost:8017/v1/tasks', {
@@ -48,59 +55,54 @@ function ToDoList() {
 
   return (
     <div className="block bg-primary w-1/2 mx-auto mt-10 p-6 rounded-2xl">
-      <div>
-        <h3 className="text-[#fff] text-left font-bold text-2xl mb-2">
-          Todo list🎯
-        </h3>
-        <div className="flex">
-          <input
-            type="text"
-            className="flex-1 bg-break p-2 rounded-e-2xl text-black focus:outline-none focus:ring-1 focus:ring-green-700 "
-            placeholder="Enter your task..."
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
-          />
-          <button
-            className="bg-secondary text-black py-2 px-5 rounded-2xl hover:bg-brand-light ml-2 cursor-pointer absolute right-120 "
-            onClick={HandleAddTask}
-            type="button"
-          >
-            Add
-          </button>
+        <div>
+          <h3 className="text-[#fff] text-left font-bold text-2xl mb-2">
+            Todo list🎯
+          </h3>
+         <div className="mb-4 flex items-center gap-3">
+          <button className="bg-secondary hover:bg-brand-light p-2 rounded-2xl cursor-pointer" onClick={() => setFilter('all')}>All</button>
+          <button className="bg-secondary hover:bg-brand-light p-2 rounded-2xl cursor-pointer" onClick={() => setFilter('pending')}>Pending</button>
+          <button className="bg-secondary hover:bg-brand-light p-2 rounded-2xl cursor-pointer" onClick={() => setFilter('compeleted')}>Completed</button>
+        </div>
+          <div className="flex">
+            <input
+              type="text"
+              className="flex-1 bg-break p-2 rounded-e-2xl text-black focus:outline-none focus:ring-1 focus:ring-green-700 "
+              placeholder="Enter your task..."
+              value={task}
+              onChange={e => setTask(e.target.value)}
+            />
+            <button
+              className="bg-secondary text-black py-2 px-5 rounded-2xl hover:bg-brand-light ml-2 cursor-pointer absolute right-120 "
+              onClick={HandleAddTask}
+              type='button'
+              >
+              Add
+            </button>
+          </div>
+        </div>
+        <div>
+          <ul>
+            { filteredTasks.map((t, i) => (
+              <div className="flex gap-1 justify-center items-center mt-3" >
+                {!t.checked ? (
+                     <Circle className="w-8 h-8 fill-green-500 cursor-pointer" onClick={() => toggleCheck(i)} />
+                  ) : (
+                    <CircleCheck className="w-8 h-8 fill-green-500 cursor-pointer" onClick={() => toggleCheck(i)} />
+                  )
+                }
+                <li 
+                  key={t._id} 
+                  className={`w-full p-2 bg-break rounded-lg text-[#000] text-left ${t.checked ? 'line-through' : ''}`}>
+                  {t.title}
+                </li>
+                <X className='w-8 h-8 cursor-pointer' onClick={() => HandleDeleteTask(t._id)}/>
+              </div>
+            ))}
+            
+          </ul>
         </div>
       </div>
-      <div>
-        <ul>
-          {tasks.map((t, i) => (
-            <div className="flex gap-1 justify-center items-center mt-3">
-              {!t.checked ? (
-                <Circle
-                  className="w-8 h-8 fill-green-500 cursor-pointer"
-                  onClick={() => toggleCheck(i)}
-                />
-              ) : (
-                <CircleCheck
-                  className="w-8 h-8 fill-green-500 cursor-pointer"
-                  onClick={() => toggleCheck(i)}
-                />
-              )}
-              <li
-                key={t._id}
-                className={`w-full p-2 bg-break rounded-lg text-[#000] text-left ${
-                  t.checked ? 'line-through' : ''
-                }`}
-              >
-                {t.title}
-              </li>
-              <X
-                className="w-8 h-8 cursor-pointer"
-                onClick={() => HandleDeleteTask(t._id)}
-              />
-            </div>
-          ))}
-        </ul>
-      </div>
-    </div>
   )
 }
 
