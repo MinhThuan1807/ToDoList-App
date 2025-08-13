@@ -51,7 +51,7 @@ const createNew = async (reqBody) => {
 
     await BrevoProvider.sendEmail(getNewUser.email, customSubject, htmlContent)
 
-    return getNewUser
+    return pickUser(getNewUser)
   } catch (error) {
     throw error
   }
