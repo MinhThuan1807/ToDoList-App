@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-
-const API_URL = 'http://localhost:8017'
+import { API_URL } from '../utils/constants'
 interface LoginResponse {
   token: string
   user: {

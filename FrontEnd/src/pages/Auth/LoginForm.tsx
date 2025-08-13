@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import type { SubmitHandler } from 'react-hook-form'
-import { login } from '../../services/authService'
+// import { login } from '../../services/authService'/
 import {
   FIELD_REQUIRED_MESSAGE,
   EMAIL_RULE,
@@ -10,6 +10,8 @@ import {
   PASSWORD_RULE_MESSAGE
 } from '../../utils/validators'
 import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { loginUserApi } from '../../redux/user/userSlice'
 
 interface LoginFormInputs {
   email: string
@@ -17,6 +19,8 @@ interface LoginFormInputs {
 }
 
 function LoginForm() {
+  // dispatch to call Api
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const registeredEmail: string | null = searchParams.get('registeredEmail')
@@ -32,7 +36,7 @@ function LoginForm() {
     toast
       .promise(
         new Promise((resolve) => {
-          setTimeout(() => resolve(login(data)), 1000)
+          setTimeout(() => resolve(dispatch(loginUserApi(data))), 1000)
         }),
         {
           pending: 'Logging in...'
