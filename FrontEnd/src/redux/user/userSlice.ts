@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { API_URL } from '../../utils/constants'
+import { toast } from 'react-toastify'
 
 // Add proper types
 interface LoginData {
@@ -20,7 +21,7 @@ export const loginUserApi = createAsyncThunk(
   'user/loginUserApi',
   async (data: LoginData) => {
     const response = await axios.post(`${API_URL}/v1/users/login`, data)
-
+    toast.success('Login successful!', { theme: 'colored' })
     return response.data
   }
 )
