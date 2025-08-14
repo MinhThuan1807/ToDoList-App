@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-
-const API_URL = 'http://localhost:8017'
+import { API_URL } from '../utils/constants'
 interface LoginResponse {
   token: string
   user: {
@@ -18,6 +17,20 @@ export const register = async (data: { email: string; password: string }) => {
   return response.data
 }
 
-export const login = (data: { email: string; password: string }) => {
-  return axios.post<LoginResponse>(`${API_URL}login`, data)
+export const login = async (data: { email: string; password: string }) => {
+  const response = await axios.post<LoginResponse>(
+    `${API_URL}/v1/users/login`,
+    data
+  )
+  toast.success('Login successful!', { theme: 'colored' })
+  return response.data
+}
+
+export const verifyEmail = async (data: { email: string; token: string }) => {
+  const response = await axios.put(`${API_URL}/v1/users/verify`, data)
+  toast.success(
+    'Your verified successfully! Now you can login to enjoy our services! Have a good day!',
+    { theme: 'colored' }
+  )
+  return response.data
 }
