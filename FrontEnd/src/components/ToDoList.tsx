@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Circle, CircleCheck, X } from 'lucide-react'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '../redux/user/userSlice' 
 import axios from 'axios'
 
 type Task = {
@@ -9,22 +11,39 @@ type Task = {
 }
 
 function ToDoList() {
-  const [task, setTask] = useState('')
-  const [tasks, setTasks] = useState<Task[]>([])
-  const [filter, setFilter] = useState<'all' | 'pending' | 'compeleted'>('all')
-  const filteredTasks = tasks.filter(task => {
-    if(filter === 'all') return true
-    if(filter === 'pending') return !task.checked
-    if(filter === 'compeleted') return task.checked
-    return true
-  })
+    const currentUser = useSelector(selectCurrentUser)
+    const [task, setTask] = useState('')
+    const [tasks, setTasks] = useState<Task[]>([])
+    const [filter, setFilter] = useState<'all' | 'pending' | 'compeleted'>('all')
+    const filteredTasks = tasks.filter(task => {
+      if(filter === 'all') return true
+      if(filter === 'pending') return !task.checked
+      if(filter === 'compeleted') return task.checked
+      return true
+    })
+
+    useEffect(() => {
+      if (currentUser?._id) {
+        axios
+          .get(`http://localhost:8017/v1/tasks?userId=${currentUser._id}`)
+          .then(res => {
+            setTasks(res.data.map((t: any) => ({
+              _id: t._id,
+              title: t.title,
+              checked: t.status ?? false
+            })))
+          })
+          .catch(err => console.error(err))
+      }
+    }, [currentUser])
 
   const HandleAddTask = async () => {
 
     if (!task.trim()) return
     try {
       const res = await axios.post('http://localhost:8017/v1/tasks', {
-        title: task
+        title: task,
+        userId: currentUser._id
       })
       setTasks([
         ...tasks,
@@ -39,11 +58,18 @@ function ToDoList() {
       console.error(error)
     }
   }
-  const toggleCheck = (index: number) => {
-    setTasks(
-      tasks.map((t, i) => (i === index ? { ...t, checked: !t.checked } : t))
-    )
+  const toggleCheck = async (id: string, currentStatus: boolean) => {
+  try {
+    const res = await axios.patch(`http://localhost:8017/v1/tasks/${id}`, {
+      status: !currentStatus
+    })
+    setTasks(tasks.map(t => 
+      t._id === id ? { ...t, checked: res.data.status } : t
+    ))
+  } catch (error) {
+    console.error(error)
   }
+}
   const HandleDeleteTask = async (id: string) => {
     try {
       await axios.delete(`http://localhost:8017/v1/tasks/${id}`)
@@ -84,19 +110,26 @@ function ToDoList() {
         <div>
           <ul>
             { filteredTasks.map((t, i) => (
-              <div className="flex gap-1 justify-center items-center mt-3" >
+              <div className="flex gap-1 justify-center items-center mt-3" key={t._id}>
                 {!t.checked ? (
-                     <Circle className="w-8 h-8 fill-green-500 cursor-pointer" onClick={() => toggleCheck(i)} />
+                     <Circle 
+                      className="w-8 h-8 fill-green-500 cursor-pointer" 
+                      onClick={() => toggleCheck(t._id, t.checked)} 
+                    />
                   ) : (
-                    <CircleCheck className="w-8 h-8 fill-green-500 cursor-pointer" onClick={() => toggleCheck(i)} />
+                    <CircleCheck 
+                      className="w-8 h-8 fill-green-500 cursor-pointer" 
+                      onClick={() => toggleCheck(t._id, t.checked)} 
+                    />
                   )
                 }
                 <li 
-                  key={t._id} 
                   className={`w-full p-2 bg-break rounded-lg text-[#000] text-left ${t.checked ? 'line-through' : ''}`}>
                   {t.title}
                 </li>
-                <X className='w-8 h-8 cursor-pointer' onClick={() => HandleDeleteTask(t._id)}/>
+                <X 
+                  className='w-8 h-8 cursor-pointer' 
+                  onClick={() => HandleDeleteTask(t._id)}/>
               </div>
             ))}
             
