@@ -17,12 +17,20 @@ interface UserState {
 const initialState: UserState = {
   currentUser: null
 }
+
 export const loginUserApi = createAsyncThunk(
   'user/loginUserApi',
-  async (data: LoginData) => {
-    const response = await axios.post(`${API_URL}/v1/users/login`, data)
-    toast.success('Login successful!', { theme: 'colored' })
-    return response.data
+  async (data: LoginData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_URL}/v1/users/login`, data)
+      toast.success('Login successful!', { theme: 'colored' })
+      return response.data
+    } catch (error: any) {
+      // Return error message of API
+      const message =
+        error?.response?.data?.message || error.message || 'Login failed'
+      return rejectWithValue(message)
+    }
   }
 )
 
@@ -33,10 +41,17 @@ export const userSlice = createSlice({
   reducers: {},
   // Extra reducers: handle asynchronous actions
   extraReducers: (builder) => {
-    builder.addCase(loginUserApi.fulfilled, (state, action) => {
-      //action.payload is response.data in loginUserApi
-      state.currentUser = action.payload
-    })
+    builder
+      .addCase(loginUserApi.fulfilled, (state, action) => {
+        //action.payload is response.data in loginUserApi
+        state.currentUser = action.payload
+      })
+      .addCase(loginUserApi.rejected, (state, action) => {
+        // Xử lý khi login thất bại
+        state.currentUser = null
+        // Có thể hiển thị toast error ở đây nếu muốn
+        toast.error(action.payload as string, { theme: 'colored' })
+      })
   }
 })
 
