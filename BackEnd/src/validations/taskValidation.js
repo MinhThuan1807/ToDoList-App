@@ -42,7 +42,7 @@ const createNew = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   const correctCondition = Joi.object({
-    title: Joi.string().required().min(3).max(100).trim().strict().message({
+    title: Joi.string().min(3).max(100).trim().strict().message({
       'any.required': 'Title is required',
       'string.empty': 'Title cannot be empty',
       'string.min': 'Title must be at least 3 characters long',
