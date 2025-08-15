@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import type { SubmitHandler } from 'react-hook-form'
-// import { login } from '../../services/authService'
 import {
   FIELD_REQUIRED_MESSAGE,
   EMAIL_RULE,
@@ -10,7 +9,6 @@ import {
   PASSWORD_RULE_MESSAGE
 } from '../../utils/validators'
 import { toast } from 'react-toastify'
-// import { useDispatch } from 'react-redux'
 import { useAppDispatch } from '../../customHook/reduxHooks'
 import { loginUserApi } from '../../redux/user/userSlice'
 
@@ -20,7 +18,6 @@ interface LoginFormInputs {
 }
 
 function LoginForm() {
-  // dispatch to call Api
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -37,7 +34,7 @@ function LoginForm() {
     toast
       .promise(
         new Promise((resolve) => {
-          setTimeout(() => resolve(dispatch(loginUserApi(data)).unwrap()), 1000)
+          setTimeout(() => resolve(dispatch(loginUserApi(data))), 1000)
         }),
         {
           pending: 'Logging in...'
@@ -45,9 +42,6 @@ function LoginForm() {
       )
       .then((res: any) => {
         if (!res.error) navigate('/')
-      })
-      .catch(() => {
-        toast.error('Your Email of Password is incorrect!')
       })
   }
 
