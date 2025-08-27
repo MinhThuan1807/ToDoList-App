@@ -11,7 +11,9 @@ Router.route('/')
 Router.route('/:id')
   .get(taskController.getDetail)
   .put(taskValidation.update, taskController.update)
-  .patchp(taskValidation.update, taskController.update)
+  .patch(taskValidation.update, taskController.update)
   .delete(taskValidation.deleteItem, taskController.deleteTask)
+
+Router.route('/user/:userId').get(taskController.getAllTasksByUserId)
 
 export const taskRoute = Router
