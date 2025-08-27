@@ -9,5 +9,6 @@ export const env = {
   AUTHOR_NAME: process.env.AUTHOR_NAME,
   BREVO_API_KEY: process.env.BREVO_API_KEY,
   ADMIN_EMAIL_ADDRESS: process.env.ADMIN_EMAIL_ADDRESS,
-  ADMIN_EMAIL_NAME: process.env.ADMIN_EMAIL_NAME
+  ADMIN_EMAIL_NAME: process.env.ADMIN_EMAIL_NAME,
+  SECRET_SESSION_KEY: process.env.SECRET_SESSION_KEY
 }
