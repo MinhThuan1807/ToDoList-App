@@ -93,10 +93,27 @@ const deleteTask = async (taskId) => {
   }
 }
 
+const getAllTasksByUserId = async (userId) => {
+  try {
+    const tasks = await taskModel.findAllByUserId(userId)
+    if (!tasks || tasks.length === 0) {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        `No tasks found for user with ID ${userId}`
+      )
+    }
+
+    return tasks
+  } catch (error) {
+    throw error
+  }
+}
+
 export const taskService = {
   createNew,
   getAll,
   getDetail,
   update,
-  deleteTask
+  deleteTask,
+  getAllTasksByUserId
 }

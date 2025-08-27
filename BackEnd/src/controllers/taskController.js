@@ -56,10 +56,22 @@ const deleteTask = async (req, res, next) => {
   }
 }
 
+const getAllTasksByUserId = async (req, res, next) => {
+  try {
+    const userId = req.params.userId
+    const tasks = await taskService.getAllTasksByUserId(userId)
+
+    res.status(StatusCodes.OK).json(tasks)
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const taskController = {
   createNew,
   getAll,
   getDetail,
   update,
-  deleteTask
+  deleteTask,
+  getAllTasksByUserId
 }

@@ -102,12 +102,26 @@ const deleteOneById = async (taskId) => {
   }
 }
 
+const findAllByUserId = async (userId) => {
+  try {
+    const tasks = await GET_DB()
+      .collection(TASK_NAME)
+      .find({ userId: new ObjectId(userId) })
+      .toArray()
+
+    return tasks
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const taskModel = {
   TASK_NAME,
   TASK_COLLECTION_SCHEMA,
   createNew,
   findOneById,
   getAll,
+  findAllByUserId,
   update,
   deleteOneById
 }
