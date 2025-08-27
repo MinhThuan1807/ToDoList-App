@@ -34,6 +34,20 @@ export const loginUserApi = createAsyncThunk(
   }
 )
 
+export const logoutUserApi = createAsyncThunk(
+  'user/logoutApi',
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${API_URL}/v1/users/logout`)
+      toast.success('Logout successful!', { theme: 'colored' })
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message || error.message || 'Logout failed'
+      return rejectWithValue(message)
+    }
+  }
+)
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -51,6 +65,9 @@ export const userSlice = createSlice({
         state.currentUser = null
         // Có thể hiển thị toast error ở đây nếu muốn
         toast.error(action.payload as string, { theme: 'colored' })
+      })
+      .addCase(logoutUserApi.fulfilled, (state) => {
+        state.currentUser = null
       })
   }
 })
