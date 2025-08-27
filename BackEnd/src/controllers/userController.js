@@ -23,7 +23,26 @@ const verifyEmail = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const result = await userService.login(req.body)
+
+    if (result) {
+      req.session.user = { userId: result._id.toString() }
+    }
     res.status(StatusCodes.OK).json(result)
+  } catch (error) {
+    next(new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error.message))
+  }
+}
+
+const logout = (req, res, next) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        return next(
+          new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, err.message)
+        )
+      }
+      res.status(StatusCodes.OK).json({ message: 'Logout successful' })
+    })
   } catch (error) {
     next(new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error.message))
   }
@@ -32,5 +51,6 @@ const login = async (req, res, next) => {
 export const userController = {
   createNew,
   verifyEmail,
-  login
+  login,
+  logout
 }

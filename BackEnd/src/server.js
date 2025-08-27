@@ -6,6 +6,8 @@ import { APIs_V1 } from '~/routes/v1/index.js'
 import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware'
 import cors from 'cors'
 import { corsOptions } from '~/config/cors'
+import session from 'express-session'
+import { sessionConfig } from '~/config/session'
 
 const START_SERVER = () => {
   const app = express()
@@ -16,8 +18,16 @@ const START_SERVER = () => {
   // Enable CORS
   app.use(cors(corsOptions))
 
+  // Cấu hình session
+  app.use(session(sessionConfig))
+
   // Use APIs v1
   app.use('/v1', APIs_V1)
+
+  app.get('/debug', (req, res) => {
+    console.log(req.session) // xem session đang lưu gì
+    res.json(req.session)
+  })
 
   app.use(errorHandlingMiddleware)
 
