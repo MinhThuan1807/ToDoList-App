@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import authorizeAxiosInstance from '../../utils/authorizeAxios'
 import { API_URL } from '../../utils/constants'
 import { toast } from 'react-toastify'
 
@@ -23,9 +23,10 @@ export const loginUserApi = createAsyncThunk(
   'user/loginUserApi',
   async (data: LoginData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/v1/users/login`, data, {
-        withCredentials: true
-      })
+      const response = await authorizeAxiosInstance.post(
+        `${API_URL}/v1/users/login`,
+        data
+      )
       toast.success('Login successful!', { theme: 'colored' })
       return response.data
     } catch (error: any) {
@@ -41,7 +42,7 @@ export const logoutUserApi = createAsyncThunk(
   'user/logoutApi',
   async (_, { rejectWithValue }) => {
     try {
-      await axios.delete(`${API_URL}/v1/users/logout`)
+      await authorizeAxiosInstance.delete(`${API_URL}/v1/users/logout`)
       toast.success('Logout successful!', { theme: 'colored' })
     } catch (error: any) {
       const message =
