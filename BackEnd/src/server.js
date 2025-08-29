@@ -8,6 +8,7 @@ import cors from 'cors'
 import { corsOptions } from '~/config/cors'
 import session from 'express-session'
 import { sessionConfig } from '~/config/session'
+import { limiter } from '~/config/limiter'
 
 const START_SERVER = () => {
   const app = express()
@@ -18,7 +19,10 @@ const START_SERVER = () => {
   // Enable CORS
   app.use(cors(corsOptions))
 
-  // Cấu hình session
+  // Config rate limiting
+  app.use(limiter)
+
+  // Config session
   app.use(session(sessionConfig))
 
   // Use APIs v1

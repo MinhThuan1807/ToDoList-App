@@ -25,7 +25,10 @@ const login = async (req, res, next) => {
     const result = await userService.login(req.body)
 
     if (result) {
-      req.session.user = { userId: result._id.toString() }
+      req.session.user = {
+        userId: result._id.toString(),
+        username: result.username
+      }
     }
     res.status(StatusCodes.OK).json(result)
   } catch (error) {

@@ -25,7 +25,9 @@ function ToDoList() {
   useEffect(() => {
     if (currentUser?._id) {
       axios
-        .get(`http://localhost:8017/v1/tasks/user/${currentUser._id}`)
+        .get(`http://localhost:8017/v1/tasks/user/${currentUser._id}`, {
+          withCredentials: true
+        })
         .then((res) => {
           setTasks(
             res.data.map((t: any) => ({
@@ -42,10 +44,14 @@ function ToDoList() {
   const HandleAddTask = async () => {
     if (!task.trim()) return
     try {
-      const res = await axios.post('http://localhost:8017/v1/tasks', {
-        title: task,
-        userId: currentUser._id
-      })
+      const res = await axios.post(
+        'http://localhost:8017/v1/tasks',
+        {
+          title: task,
+          userId: currentUser._id
+        },
+        { withCredentials: true }
+      )
       setTasks([
         ...tasks,
         {
@@ -61,9 +67,13 @@ function ToDoList() {
   }
   const toggleCheck = async (id: string, currentStatus: boolean) => {
     try {
-      const res = await axios.patch(`http://localhost:8017/v1/tasks/${id}`, {
-        status: !currentStatus
-      })
+      const res = await axios.patch(
+        `http://localhost:8017/v1/tasks/${id}`,
+        {
+          status: !currentStatus
+        },
+        { withCredentials: true }
+      )
       setTasks(
         tasks.map((t) =>
           t._id === id ? { ...t, checked: res.data.status } : t
@@ -75,7 +85,9 @@ function ToDoList() {
   }
   const HandleDeleteTask = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:8017/v1/tasks/${id}`)
+      await axios.delete(`http://localhost:8017/v1/tasks/${id}`, {
+        withCredentials: true
+      })
       setTasks(tasks.filter((t) => t._id !== id))
     } catch (error) {
       console.error(error)
@@ -127,7 +139,7 @@ function ToDoList() {
       </div>
       <div>
         <ul>
-          {filteredTasks.map((t, i) => (
+          {filteredTasks.map((t) => (
             <div
               className="flex gap-1 justify-center items-center mt-3"
               key={t._id}

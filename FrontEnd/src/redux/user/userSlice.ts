@@ -18,11 +18,14 @@ const initialState: UserState = {
   currentUser: null
 }
 
+// Use createAsyncThunk to handle async actions
 export const loginUserApi = createAsyncThunk(
   'user/loginUserApi',
   async (data: LoginData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/v1/users/login`, data)
+      const response = await axios.post(`${API_URL}/v1/users/login`, data, {
+        withCredentials: true
+      })
       toast.success('Login successful!', { theme: 'colored' })
       return response.data
     } catch (error: any) {
