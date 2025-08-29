@@ -10,6 +10,7 @@ const rootPersistConfig = {
   whitelist: ['user'] // user data can store in redux when press f5
 }
 
+// Combine all reducers
 const reducers = combineReducers({
   user: userReducer
 })
