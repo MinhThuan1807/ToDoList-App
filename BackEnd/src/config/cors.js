@@ -19,5 +19,6 @@ export const corsOptions = {
         `${origin} not allowed by our CORS Policy`
       )
     )
-  }
+  },
+  credentials: true
 }

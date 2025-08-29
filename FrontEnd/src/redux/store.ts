@@ -20,7 +20,7 @@ const persistedReducer = persistReducer(rootPersistConfig, reducers)
 export const store = configureStore({
   reducer: persistedReducer,
 
-  // Fix warning: error when implement redux-persist (NON-SERIALIZABLE)
+  // Fix warning: error when implement redux-persist (NON-SERIALIZABLE : Date, Symbol, Promise)
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false

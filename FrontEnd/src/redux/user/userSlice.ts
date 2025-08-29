@@ -18,17 +18,34 @@ const initialState: UserState = {
   currentUser: null
 }
 
+// Use createAsyncThunk to handle async actions
 export const loginUserApi = createAsyncThunk(
   'user/loginUserApi',
   async (data: LoginData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/v1/users/login`, data)
+      const response = await axios.post(`${API_URL}/v1/users/login`, data, {
+        withCredentials: true
+      })
       toast.success('Login successful!', { theme: 'colored' })
       return response.data
     } catch (error: any) {
       // Return error message of API
       const message =
         error?.response?.data?.message || error.message || 'Login failed'
+      return rejectWithValue(message)
+    }
+  }
+)
+
+export const logoutUserApi = createAsyncThunk(
+  'user/logoutApi',
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${API_URL}/v1/users/logout`)
+      toast.success('Logout successful!', { theme: 'colored' })
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message || error.message || 'Logout failed'
       return rejectWithValue(message)
     }
   }
@@ -51,6 +68,9 @@ export const userSlice = createSlice({
         state.currentUser = null
         // Có thể hiển thị toast error ở đây nếu muốn
         toast.error(action.payload as string, { theme: 'colored' })
+      })
+      .addCase(logoutUserApi.fulfilled, (state) => {
+        state.currentUser = null
       })
   }
 })

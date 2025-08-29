@@ -26,6 +26,11 @@ export const login = async (data: { email: string; password: string }) => {
   return response.data
 }
 
+export const logout = async () => {
+  await axios.delete(`${API_URL}/v1/users/logout`)
+  toast.success('Logout successful!', { theme: 'colored' })
+}
+
 export const verifyEmail = async (data: { email: string; token: string }) => {
   const response = await axios.put(`${API_URL}/v1/users/verify`, data)
   toast.success(
