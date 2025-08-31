@@ -48,7 +48,7 @@ function RegisterForm() {
   }
 
   return (
-    <div className="block bg-primary w-120 mx-auto mt-10 p-6 rounded-2xl">
+    <div className="block bg-primary w-full sm:w-120 mx-auto mt-10 p-6 rounded-2xl">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full h-auto mx-auto rounded-2xl"
@@ -120,9 +120,9 @@ function RegisterForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-70 bg-brand-light text-white py-2 rounded-2xl hover:bg-brand-dark mb-4"
+          className="w-70 bg-brand-light text-white py-2 rounded-2xl hover:bg-brand-dark mb-4 cursor-pointer"
         >
-          {isSubmitting ? 'Đang xử lý...' : 'Đăng ký'}
+          {isSubmitting ? 'In Progress...' : 'Register'}
         </button>
       </form>
     </div>
