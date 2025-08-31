@@ -19,7 +19,11 @@ createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
       <App />
-      <ToastContainer position="top-right" theme="colored" />
+      <ToastContainer
+        position="bottom-right"
+        theme="colored"
+        autoClose={3000}
+      />
     </PersistGate>
   </Provider>
 )

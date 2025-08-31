@@ -81,10 +81,10 @@ function ToDoList() {
   }
 
   return (
-    <div className="block bg-primary w-full max-w-2xl mx-auto mt-6 p-4 sm:p-6 rounded-2xl">
+    <div className="block bg-primary w-full max-w-2xl mx-auto mt-6 p-4 rounded-2xl">
       <div>
-        <h3 className="text-[#fff] text-left font-bold text-xl sm:text-2xl mb-2">
-          Todo list🎯
+        <h3 className="text-[#fff] text-left font-bold text-xl  mb-2">
+          Todo list of {currentUser?.username}🎯
         </h3>
         <div className="mb-4 flex flex-wrap gap-2 sm:gap-3">
           <button
@@ -123,11 +123,11 @@ function ToDoList() {
           </button>
         </div>
       </div>
-      <div>
+      <div className="overflow-auto max-h-90 custom-scroll">
         <ul>
           {filteredTasks.map((t) => (
             <div
-              className="flex gap-1 sm:gap-2 justify-center items-center mt-3 flex-col sm:flex-row"
+              className="flex gap-1 sm:gap-2 justify-center items-center mt-3 sm:flex-row"
               key={t._id}
             >
               {!t.checked ? (
