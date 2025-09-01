@@ -27,7 +27,7 @@ authorizeAxiosInstance.interceptors.response.use(
     // Handle 401 Unauthorized
     if (error.response?.data?.statusCode === 401) {
       toast.error('Session expired. Please log in again.', {
-        theme: 'colored'
+        theme: 'light'
       })
       axiosReduxStore.dispatch(logoutUserApi())
     }
@@ -35,7 +35,7 @@ authorizeAxiosInstance.interceptors.response.use(
     if (error.response?.status === 429) {
       // Optionally, you can implement a retry mechanism or show a user-friendly message
       toast.error('Too many requests. Please try again later.', {
-        theme: 'colored'
+        theme: 'light'
       })
     }
     if (error.response?.status !== 401 && error.response?.status !== 429) {
@@ -47,7 +47,7 @@ authorizeAxiosInstance.interceptors.response.use(
 
       if (errorMessage) {
         toast.error(errorMessage, {
-          theme: 'colored'
+          theme: 'light'
         })
       }
     }

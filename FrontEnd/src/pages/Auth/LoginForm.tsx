@@ -46,7 +46,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="block bg-primary w-full sm:w-120 mx-auto mt-10 p-6 rounded-2xl">
+    <div className="block bg-primary w-full sm:w-120 mx-auto mt-10 p-6 rounded-2xl liquid-glass-box">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full h-auto mx-auto rounded-2xl"
@@ -85,7 +85,7 @@ function LoginForm() {
               required: FIELD_REQUIRED_MESSAGE,
               pattern: { value: EMAIL_RULE, message: EMAIL_RULE_MESSAGE }
             })}
-            className="w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-gray-300"
+            className="liquid-glass-box w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-gray-300"
           />
           {errors.email && (
             <p className=" text-red-500  text-sm text-left">
@@ -103,7 +103,7 @@ function LoginForm() {
               required: FIELD_REQUIRED_MESSAGE,
               pattern: { value: PASSWORD_RULE, message: PASSWORD_RULE_MESSAGE }
             })}
-            className="w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-gray-300"
+            className="liquid-glass-box w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-gray-300"
           />
           {errors.password && (
             <p className=" text-red-500 text-sm text-left">
@@ -113,7 +113,7 @@ function LoginForm() {
         </div>
         <button
           type="submit"
-          className="w-70 bg-brand-light text-white py-2 rounded-2xl hover:bg-brand-dark mb-4 cursor-pointer"
+          className="liquid-glass-btn w-70 bg-brand-light text-white py-2 rounded-2xl hover:bg-brand-dark mb-4 cursor-pointer"
         >
           {isSubmitting ? 'In Progress...' : 'Login'}
         </button>

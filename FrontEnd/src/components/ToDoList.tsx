@@ -81,41 +81,41 @@ function ToDoList() {
   }
 
   return (
-    <div className="block bg-primary w-full max-w-2xl mx-auto mt-6 p-4 rounded-2xl">
+    <div className="liquid-glass-box block bg-primary w-full max-w-2xl mx-auto mt-6 p-4 rounded-2xl">
       <div>
-        <h3 className="text-[#fff] text-left font-bold text-xl  mb-2">
+        <h3 className="text-left font-bold text-xl  mb-2 text-shadow-lg/50">
           Todo list of {currentUser?.username}🎯
         </h3>
         <div className="mb-4 flex flex-wrap gap-2 sm:gap-3">
           <button
-            className="bg-secondary hover:bg-brand-light p-2 rounded-2xl cursor-pointer text-xs sm:text-base"
+            className="liquid-glass-btn bg-secondary hover:bg-brand-light p-2 rounded-2xl cursor-pointer text-xs sm:text-base"
             onClick={() => setFilter('all')}
           >
             All
           </button>
           <button
-            className="bg-secondary hover:bg-brand-light p-2 rounded-2xl cursor-pointer text-xs sm:text-base"
+            className="liquid-glass-btn bg-secondary hover:bg-brand-light p-2 rounded-2xl cursor-pointer text-xs sm:text-base"
             onClick={() => setFilter('pending')}
           >
             Pending
           </button>
           <button
-            className="bg-secondary hover:bg-brand-light p-2 rounded-2xl cursor-pointer text-xs sm:text-base"
+            className="liquid-glass-btn bg-secondary hover:bg-brand-light p-2 rounded-2xl cursor-pointer text-xs sm:text-base"
             onClick={() => setFilter('compeleted')}
           >
             Completed
           </button>
         </div>
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className=" flex flex-col sm:flex-row gap-2">
           <input
             type="text"
-            className="flex-1 bg-break p-2 rounded-2xl text-black focus:outline-none focus:ring-1 focus:ring-green-700 text-sm sm:text-base"
+            className="liquid-glass-box flex-1 bg-break p-2 rounded-2xl text-black focus:outline-none focus:ring-1 focus:ring-green-500 text-sm sm:text-base"
             placeholder="Enter your task..."
             value={task}
             onChange={(e) => setTask(e.target.value)}
           />
           <button
-            className="bg-secondary text-black py-2 px-4 sm:px-5 rounded-2xl hover:bg-brand-light cursor-pointer"
+            className="liquid-glass-btn bg-secondary text-black py-2 px-4 sm:px-5 rounded-2xl hover:bg-brand-light cursor-pointer"
             onClick={HandleAddTask}
             type="button"
           >
@@ -125,24 +125,25 @@ function ToDoList() {
       </div>
       <div className="overflow-auto max-h-90 custom-scroll">
         <ul>
-          {filteredTasks.map((t) => (
+          {filteredTasks.map((t, idx) => (
             <div
-              className="flex gap-1 sm:gap-2 justify-center items-center mt-3 sm:flex-row"
+              className={`flex gap-1 sm:gap-2 justify-center items-center mt-3 sm:flex-row transition-all duration-300 ease-out opacity-0 translate-y-4 animate-fadeIn`}
+              style={{ animationDelay: `${idx * 60}ms` }}
               key={t._id}
             >
               {!t.checked ? (
                 <Circle
-                  className="w-7 h-7 sm:w-8 sm:h-8 fill-green-500 cursor-pointer"
+                  className="w-7 h-7 sm:w-8 sm:h-8 cursor-pointer"
                   onClick={() => toggleCheck(t._id, t.checked)}
                 />
               ) : (
                 <CircleCheck
-                  className="w-7 h-7 sm:w-8 sm:h-8 fill-green-500 cursor-pointer"
+                  className="w-7 h-7 sm:w-8 sm:h-8 liquid-glass-btn cursor-pointer"
                   onClick={() => toggleCheck(t._id, t.checked)}
                 />
               )}
               <li
-                className={`w-full p-2 bg-break rounded-lg text-[#000] text-left ${
+                className={`liquid-glass-box text-shadow-lg/20 w-full p-2 bg-break rounded-lg text-[#000] text-left ${
                   t.checked ? 'line-through' : ''
                 } text-sm sm:text-base`}
               >
@@ -155,6 +156,19 @@ function ToDoList() {
             </div>
           ))}
         </ul>
+        <style>
+          {`
+        @keyframes fadeIn {
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.5s forwards;
+        }
+          `}
+        </style>
       </div>
     </div>
   )

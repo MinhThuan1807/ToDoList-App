@@ -15,7 +15,7 @@ function Profile() {
       <button
         data-tooltip-id="logout-tooltip"
         onClick={() => dispatch(logoutUserApi())}
-        className=" text-gray-900 hover:text-red-500 cursor-pointer"
+        className=" text-white-500 hover:text-red-500 cursor-pointer"
       >
         <CiLogout size={28} />
       </button>

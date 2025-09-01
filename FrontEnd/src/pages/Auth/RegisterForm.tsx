@@ -48,7 +48,7 @@ function RegisterForm() {
   }
 
   return (
-    <div className="block bg-primary w-full sm:w-120 mx-auto mt-10 p-6 rounded-2xl">
+    <div className="block bg-primary w-full sm:w-120 mx-auto mt-10 p-6 rounded-2xl liquid-glass-box">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full h-auto mx-auto rounded-2xl"
@@ -69,7 +69,7 @@ function RegisterForm() {
                 message: EMAIL_RULE_MESSAGE
               }
             })}
-            className="w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-none"
+            className="liquid-glass-box w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-none"
           />
           {errors.email && (
             <p className="text-red-500 text-left">{errors.email.message}</p>
@@ -88,7 +88,7 @@ function RegisterForm() {
                 message: PASSWORD_RULE_MESSAGE
               }
             })}
-            className="w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-none"
+            className="liquid-glass-box w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-none"
           />
           {errors.password && (
             <p className="text-red-500 text-left">{errors.password.message}</p>
@@ -108,7 +108,7 @@ function RegisterForm() {
                 return PASSWORD_CONFIRMATION_MESSAGE
               }
             })}
-            className="w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-none"
+            className=" liquid-glass-box w-full border px-3 py-2 rounded bg-white text-black focus:outline-none border-none"
           />
           {errors.confirmPassword && (
             <p className="text-red-500 text-left">
@@ -120,7 +120,7 @@ function RegisterForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-70 bg-brand-light text-white py-2 rounded-2xl hover:bg-brand-dark mb-4 cursor-pointer"
+          className="liquid-glass-btn w-70 bg-brand-light text-white py-2 rounded-2xl hover:bg-brand-dark mb-4 cursor-pointer"
         >
           {isSubmitting ? 'In Progress...' : 'Register'}
         </button>
