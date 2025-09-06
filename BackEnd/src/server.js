@@ -35,9 +35,19 @@ const START_SERVER = () => {
 
   app.use(errorHandlingMiddleware)
 
-  app.listen(env.APP_PORT, env.APP_HOST, () => {
-    console.log(`Server is running at http://${env.APP_HOST}:${env.APP_PORT}`)
-  })
+  if (env.BUILD_MODE === 'dev') {
+    app.listen(Number(env.LOCAL_APP_PORT), env.LOCAL_APP_HOST, () => {
+      console.log(
+        `LOCAL DEV: Hello ${env.AUTHOR_NAME}, Server is running at http://${env.LOCAL_APP_HOST}:${env.LOCAL_APP_PORT}`
+      )
+    })
+  } else {
+    app.listen(Number(process.env.PORT), () => {
+      console.log(
+        `PRODUCTION: Hello ${env.AUTHOR_NAME}, Backend Server is running successfully at Port: ${process.env.PORT}`
+      )
+    })
+  }
 }
 
 //IIFE to start the server
