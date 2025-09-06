@@ -1,13 +1,19 @@
 import { env } from './environment'
+import { redisClient } from './redis'
+import session from 'express-session'
+// Need add v5.x.x version of connect-redis to run session store
+const RedisStore = require('connect-redis')(session)
 
 //Config session
 export const sessionConfig = {
+  store: new RedisStore({ client: redisClient }),
   secret: env.SECRET_SESSION_KEY,
   resave: false, // don't save session if unmodified
-  saveUninitialized: true, // save new session even if not set data
+  saveUninitialized: false, // don't save new session even if not set data
   cookie: {
     maxAge: 1000 * 60 * 30, // 30 minutes
     httpOnly: true, // security: only server can access cookie
-    secure: false // true: only send cookie over HTTPS
+    secure: env.BUILD_MODE === 'production', // true: only send cookie over HTTPS
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // CSRF protection
   }
 }

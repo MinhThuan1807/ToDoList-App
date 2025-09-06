@@ -13,6 +13,10 @@ import { limiter } from '~/config/limiter'
 const START_SERVER = () => {
   const app = express()
 
+  if (env.BUILD_MODE === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+  }
+
   // Enable req.body json data
   app.use(express.json())
 
