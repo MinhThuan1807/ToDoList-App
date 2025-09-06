@@ -5,6 +5,7 @@ export const env = {
   DATABASE_NAME: process.env.DATABASE_NAME,
   LOCAL_APP_HOST: process.env.LOCAL_APP_HOST,
   LOCAL_APP_PORT: process.env.LOCAL_APP_PORT,
+  REDIS_URL: process.env.REDIS_URL,
   BUILD_MODE: process.env.BUILD_MODE,
   AUTHOR_NAME: process.env.AUTHOR_NAME,
   BREVO_API_KEY: process.env.BREVO_API_KEY,
